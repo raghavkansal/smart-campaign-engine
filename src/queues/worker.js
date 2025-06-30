@@ -1,5 +1,5 @@
 const { Worker } = require('bullmq');
-const connection = require('./redis');
+const redis = require('./redis');
 const { logDispatch } = require('../utils/logger');
 
 
@@ -22,7 +22,7 @@ const worker = new Worker('trigger-events', async job => {
 
     logDispatch(campaign_id, log);
 }, {
-    connection,
+    connection: redis.options,
     attempts: 3,
     backoff: {
         type: 'exponential',

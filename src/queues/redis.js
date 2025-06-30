@@ -1,6 +1,15 @@
-const { Redis } = require("ioredis");
+const { Redis } = require('ioredis');
+const { URL } = require('url');
 
-module.exports = new Redis(process.env.REDIS_URL, {
-    family: 0, // Force IPv4 
-    maxRetriesPerRequest: null
+const redisURL = new URL(process.env.REDIS_URL || 'redis://localhost:6379');
+
+const redis = new Redis({
+  host: redisURL.hostname,
+  port: Number(redisURL.port),
+  username: redisURL.username || undefined,
+  password: redisURL.password || undefined,
+  family: 0,
+  maxRetriesPerRequest: null
 });
+
+module.exports = redis;
